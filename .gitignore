@@ -1,0 +1,6 @@
+autobrew
+vendor/
+dist/
+cover.*
+gominicli
+lightscreen

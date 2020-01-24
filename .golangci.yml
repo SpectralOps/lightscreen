@@ -1,0 +1,14 @@
+# in general golangci is still kind of flaky, makes unresponsive, false positives.
+linters:
+  enable-all: true
+  disable:
+    - maligned
+    - prealloc
+    - gochecknoglobals
+    - dupl
+    - depguard
+    - gocyclo
+    - gofmt
+    - gosec
+    - lll
+    - misspell

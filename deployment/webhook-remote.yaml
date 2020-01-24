@@ -1,0 +1,17 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: lightscreen-webhook
+  labels:
+    app: lightscreen-webhook
+    kind: mutator
+webhooks:
+  - name: lightscreen-webhook.getspectral.io
+    clientConfig:
+      url: https://--.ngrok.io
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        

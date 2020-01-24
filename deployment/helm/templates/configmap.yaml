@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lightscreen-config
+  labels:
+{{ include "lightscreen.labels" . | indent 4 }}
+data:
+  lightscreen.yaml: {{.Files.Get "files/lightscreen.yaml" | printf "%s" | quote }}

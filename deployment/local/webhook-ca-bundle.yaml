@@ -1,0 +1,38 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: lightscreen-webhook
+  labels:
+    app: lightscreen
+webhooks:
+  - name: lightscreen.getspectral.io
+    clientConfig:
+      service:
+        name: lightscreen-svc
+        namespace: default
+        path: "/"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRFNU1EZ3hOVEV6TXpReU1Gb1hEVEk1TURneE1qRXpNelF5TUZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTTVPCjlINS9JN29yYnRESXhxSUg0VktpZUUwSHk4UUVVZmRVQkt1V0Qvb2p1cnFtZXFXR0QwaW5WREt1TjNHdWhwT1QKbzQxQTBhbHRXOXE3NlVhN2RtSmVGQWhCRDVRMTZGQXQ4L01XUkgrQkFLemo5Nldjd2ZURDJNQjI0S005MmNRVQpyaXVCMGQyNHc0RFljellYVGxvaTNKU3pZblFmY1hPRVVyOEUyUGNhZjQweXVaOFBqYWZDNzJVdHVyUVNxZWVJCnFuUEhCUnRiZC8xZnRJYWN3UVBVdDg1VHF5Y1NnbldldjV2Y1NmbVJyL2VhQy9XOVFnclNUMkZtRmhQTHRzRnoKNWc3dGJ6YzJjQ09GVHRoSmxRV1hnN29mSDFFOHgrNjg4ek9kb09jeGtWWlY5K2hEN0VKS1pyVmZhQWdpRkRWVQpjL2Y2OURWUXpCSGY4WjFPZEJVQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFNWUJaVG9oZXM4WTJRZVg0SFhlalF4NmhxL0EKMTE5Q1BXcUpFZ0lnWFB5cGx1YWtTV2VGWWV2ZUFMZjRZMlp4QlNLOUhuck9PeHUzL0gveUVudkFXd2Z5cnZLWApkSU9rN2xPUGp0bHppRVhBdlBxZDZ6QnFGdEcweWtHVGFqSkVzWHhxcGFnTmZjMGFHMUZKaGR1SG5BdFhMWnFhCnRqNDZpdlBYZWpBdEROdzZVWGIyUDY5aVAzSmRFTXN2b2U3OUc2bXNIYkxaY2dkZGc5aDJDaUFpcjN3WFUwWnUKd2xmT09zUkhSWGI4ak82TENMRjkya2srMkxkdTJIU1VUS2Q4NER1VzRWbEtsaHRaVitSbGcrbFRhV2F6eXVvdQppZk1CMko1NkFXNzc1bjNQTWpiRmZuVE1TT1lGNUNWTzJ1dkZFSjJxTnVqaDZzQTNCck5GU08zTFY3Zz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    namespaceSelector:
+      matchLabels:
+        lightscreen: enabled
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: {{ template "lightscreen.name" . }}-certs
+  labels:
+    app: {{ template "lightscreen.name" . }}
+    chart: {{ template "lightscreen.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+data:
+{{ ( include "lightscreen.gen-certs" . ) | indent 2 }}

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lightscreen-deployment
+  labels:
+    app: lightscreen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lightscreen
+  template:
+    metadata:
+      labels:
+        app: lightscreen
+    spec:
+      containers:
+        - name: lightscreen
+          image: jondot/lightscreen:v0.6
+          imagePullPolicy: IfNotPresent
+          args:
+            - --certs=/etc/webhook/certs
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
+          # livenessProbe:
+          #   httpGet:
+          #     scheme: HTTPS
+          #     port: 443
+          #     path: /healthz
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: lightscreen-certs

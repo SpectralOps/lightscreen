@@ -1,0 +1,9 @@
+mutations:
+  - type: resolve_sha
+    finder: crane
+    finder_config:
+        foo: bar
+validations:
+  - type: admit_sha
+    admit:
+      "library/nginx@sha256:a8517b1d89209c88eeb48709bc06d706c261062813720a352a8e4f8d96635d9d": true

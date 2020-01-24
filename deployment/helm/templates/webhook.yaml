@@ -1,0 +1,39 @@
+{{- $cn := printf "%s.%s.svc" ( include "lightscreen.fullname" . ) .Release.Namespace }}
+{{- $ca := genCA "lightscreen-ca" 3650 -}}
+{{- $cert := genSignedCert $cn nil nil 3650 $ca -}}
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "lightscreen.fullname" . }}-webhook
+  labels:
+{{ include "lightscreen.labels" . | indent 4 }}
+webhooks:
+  - name: lightscreen.getspectral.io
+    clientConfig:
+      service:
+        name: {{ include "lightscreen.fullname" . }}
+        namespace: default
+        path: "/"
+      caBundle: {{ b64enc $ca.Cert }}
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    namespaceSelector:
+      matchLabels:
+        lightscreen: enabled
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "lightscreen.fullname" . }}-certs
+  labels:
+{{ include "lightscreen.labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+type: Opaque
+data:
+  tls.crt: {{ b64enc $cert.Cert }}
+  tls.key: {{ b64enc $cert.Key }}

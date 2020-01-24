@@ -1,0 +1,4 @@
+(map[string]interface {}) (len=2) {
+(string) (len=7) "patches": ([]jsonpatch.Operation) <nil>,
+(string) (len=3) "res": (v1beta1.AdmissionResponse) &AdmissionResponse{UID:,Allowed:false,Result:&k8s_io_apimachinery_pkg_apis_meta_v1.Status{ListMeta:ListMeta{SelfLink:,ResourceVersion:,Continue:,},Status:,Message:unmarshalerDecoder: Object 'Kind' is missing in '{"request":{"uid":"","kind":{"group":"","version":"v1","kind":"Pod"},"resource":{"group":"","version":"","resource":""},"operation":"","userInfo":{},"object":{"metadata":{"creationTimestamp":null},"spec":{"containers":[{"name":"nginx","resources":{}}]},"status":{}},"oldObject":null}}', error found in #10 byte of ...|ct":null}}|..., bigger context ...|,"resources":{}}]},"status":{}},"oldObject":null}}|...,Reason:,Details:nil,Code:400,},Patch:nil,PatchType:nil,AuditAnnotations:map[string]string{},}
+}
