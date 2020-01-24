@@ -1,6 +1,8 @@
 ![Build Status](https://travis-ci.org/spectralops/lightscreen.svg?branch=master)
 
-![](media/logo.png)
+<center>
+<img src="media/logo.png" width="330px"/>
+</center>
 
 # Lightscreen
 
