@@ -1,0 +1,17 @@
+rules:
+- id: AWS0001
+  name: No AWS secrets in python files.
+  finding: ".*/(.*).py" # python file name
+  subject: "(.*)[^/]*"  # root folder
+  description: We should not have any AWS secrets in python files.
+  tags:
+  - python
+  applies_to:
+  - ".*\\.py$"
+  severity: info
+  pattern_group:
+    aggregate: or
+    scope: text
+    patterns:
+    - pattern: ".*A[KS]IA.*"
+      pattern_type: regex # This can also be 'dict', 'entropy'. For 'dict' see words.yaml

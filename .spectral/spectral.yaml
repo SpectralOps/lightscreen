@@ -1,0 +1,19 @@
+reporter:
+    outputs:
+        stylish: {}        # nice looking CLI reports
+
+match_ignores:
+    ignores:
+    - path: ".*/.spectral/"
+    - path: ".*/self-certs/tls.key$"
+
+projects:
+    sample:
+        project:
+            name: sample
+        input:
+            - local: .
+              name: sources
+        rules:
+            roots:
+            - rules
