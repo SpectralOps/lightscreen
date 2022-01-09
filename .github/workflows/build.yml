@@ -10,7 +10,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup Preflight
         uses: SpectralOps/setup-preflight-action@v1
+        with:
+          preflight-version: "1.1.4"
       - name: Spectral Install
-        run: curl -L "https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN" | preflight run sha256=46c2cf18d822cc3f310b320240259d6735d4a3ae06d82cb705a3e0e8d520f332
+        run: curl -L "https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN" | preflight run https://sigs.spectralops.io/spectral
       - name: Spectral Scan
         run:  $HOME/.spectral/spectral scan
