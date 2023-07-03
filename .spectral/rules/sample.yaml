@@ -8,7 +8,7 @@ rules:
   - python
   applies_to:
   - ".*\\.py$"
-  severity: info
+  severity: informational
   pattern_group:
     aggregate: or
     scope: text
