@@ -1,4 +1,4 @@
-FROM alpine:3.15.4
+FROM alpine:3.15.8
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
 ADD lightscreen /lightscreen
